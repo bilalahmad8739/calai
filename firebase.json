@@ -1,0 +1,1 @@
+{"flutter":{"platforms":{"android":{"default":{"projectId":"macro-pal","appId":"1:255314622552:android:e0a05f013a6526df13f22d","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"macro-pal","configurations":{"android":"1:255314622552:android:e0a05f013a6526df13f22d","ios":"1:255314622552:ios:9a249af5436770aa13f22d"}}}}}}

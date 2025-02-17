@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "255314622552",
+    "project_id": "macro-pal",
+    "storage_bucket": "macro-pal.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255314622552:android:e0a05f013a6526df13f22d",
+        "android_client_info": {
+          "package_name": "com.example.cal_ai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDulHFu9NBBuPnIChcLU4-Ac9vlHz1uDsc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
