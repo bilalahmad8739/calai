@@ -14,8 +14,6 @@ class AuthenticationProvider extends ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirestoreServices _firestoreServices = FirestoreServices();
 
-  
-  
   //< -----------------------------------------------------------------> for specific data fetch
 
   // State variables
@@ -25,14 +23,21 @@ class AuthenticationProvider extends ChangeNotifier {
   double? _carbsGoal;
   double? _fatsGoal;
   double? _consumedCalories = 0;
-
-//consumed amount
+  //consumed amount
   double? _consumedProtein = 0;
   double? _consumedCarbs = 0;
   double? _consumedFats = 0;
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
+
   User? _user;
   // Getters for goals
   get calorieGoal => _calorieGoal;
+  void setGoal(double value){
+    _calorieGoal = value;
+    notifyListeners();
+  }
   get proteinGoal => _proteinGoal;
   get carbsGoal => _carbsGoal;
   get fatsGoal => _fatsGoal;
@@ -46,8 +51,8 @@ class AuthenticationProvider extends ChangeNotifier {
   // Getters for basic properties
   get remainingCalories {
     if (_calorieGoal != null && _consumedCalories != null) {
-
-      print("remaing calories------------>${(_calorieGoal! - _consumedCalories!).clamp(0.0, double.infinity)}");
+      print(
+          "remaing calories------------>${(_calorieGoal! - _consumedCalories!).clamp(0.0, double.infinity)}");
       return (_calorieGoal! - _consumedCalories!).clamp(0.0, double.infinity);
     }
     return 0.0;
@@ -55,6 +60,9 @@ class AuthenticationProvider extends ChangeNotifier {
 
   double get remainingProtein {
     if (_proteinGoal != null && _consumedProtein != null) {
+      print(
+          "remaing proteins------------>${(_proteinGoal! - _consumedProtein!).clamp(0.0, double.infinity)}");
+
       return (_proteinGoal! - _consumedProtein!).clamp(0.0, double.infinity);
     }
     return 0.0;
@@ -62,6 +70,9 @@ class AuthenticationProvider extends ChangeNotifier {
 
   double get remainingCarbs {
     if (_carbsGoal != null && _consumedCarbs != null) {
+      print(
+          "remaing carbs------------>${(_carbsGoal! - _consumedCarbs!).clamp(0.0, double.infinity)}");
+
       return (_carbsGoal! - _consumedCarbs!).clamp(0.0, double.infinity);
     }
     return 0.0;
@@ -69,6 +80,9 @@ class AuthenticationProvider extends ChangeNotifier {
 
   double get remainingFats {
     if (_fatsGoal != null && _consumedFats != null) {
+      print(
+          "remaing fats------------>${(_fatsGoal! - _consumedFats!).clamp(0.0, double.infinity)}");
+
       return (_fatsGoal! - _consumedFats!).clamp(0.0, double.infinity);
     }
     return 0.0;
@@ -217,6 +231,7 @@ class AuthenticationProvider extends ChangeNotifier {
             .doc(_user?.uid) // Store user data under userId
             .set(macronutrients,
                 SetOptions(merge: true)); // Merges with existing data
+
         // String todayDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
         // await _firestore
@@ -264,8 +279,10 @@ class AuthenticationProvider extends ChangeNotifier {
   Future<void> getUserData() async {
     try {
       DocumentSnapshot? snapshot = await _firestoreServices.fetchUserData();
+      print("user data------->${snapshot.toString()}");
       if (snapshot != null && snapshot.exists) {
         _userData = snapshot.data() as Map<String, dynamic>;
+        print("USER data-------------->$_userData");
 
         // Set goals from Firestore data
         if (_userData!.containsKey('calories')) {
@@ -293,16 +310,41 @@ class AuthenticationProvider extends ChangeNotifier {
     }
   }
 
+  // Modified reset method
+  void _resetConsumedValues() {
+   
+    _consumedCalories = 0.0;
+    _consumedProtein = 0.0;
+    _consumedCarbs = 0.0;
+    _consumedFats = 0.0;
+    notifyListeners();
+  }
+
   Future<void> loadConsumedNutrientsForDate(DateTime date) async {
+    print("loadConsumedNutrientsForDate function called----------");
     try {
+      print("loadConsumedNutrientsForDate----------${date}");
+      _isLoading = true;
+      notifyListeners();
+
+      // 1. Reset all consumed values to 0 when loading new date
+       _resetConsumedValues();
+
       String uid = await CalSharedPreferences.getString('uid');
-      if (uid.isEmpty) return;
+      if (uid.isEmpty) {
+        _isLoading = false;
+        notifyListeners();
+        return;
+      }
 
+      // 2. Format the date to YYYY-MM-DD for Firestore
       final normalizedDate = DateTime(date.year, date.month, date.day);
+      print("normalizedDate----------${normalizedDate}");
       String dateStr = DateFormat('yyyy-MM-dd').format(normalizedDate);
-      
-      print('Loading nutrients for date: $dateStr');
 
+      print('Loading data for date: $dateStr');
+
+      // 3. Try to get data for this specific date
       QuerySnapshot snapshot = await _firestore
           .collection('userdata')
           .doc(uid)
@@ -310,38 +352,42 @@ class AuthenticationProvider extends ChangeNotifier {
           .doc(dateStr)
           .collection('history')
           .get();
+        
 
-      // Calculate totals for this specific date
-      double dateCalories = 0;
-      double dateProtein = 0;
-      double dateCarbs = 0;
-      double dateFats = 0;
-
-      for (var doc in snapshot.docs) {
-        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        dateCalories += (data['calories'] ?? 0);
-        dateProtein += (data['proteins'] ?? 0);
-        dateCarbs += (data['carbs'] ?? 0);
-        dateFats += (data['fats'] ?? 0);
+      // 4. If no data exists for this date, keep the zeros
+      if (snapshot.docs.isEmpty) {
+        print('No data found for date: $dateStr');
+        _consumedCalories = 0;
+        _consumedProtein = 0;
+        _consumedCarbs = 0;
+        _consumedFats = 0;
+        _isLoading = false;
+        notifyListeners();
+        return;
       }
 
-      // Update the consumed values for this date
-      _consumedCalories = dateCalories;
-      _consumedProtein = dateProtein;
-      _consumedCarbs = dateCarbs;
-      _consumedFats = dateFats;
+      // 5. If data exists, sum up all entries for this date
+      for (var doc in snapshot.docs) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        print("data is ------------>$data");
+        _consumedCalories = (_consumedCalories ?? 0) + (data['calories'] ?? 0);
+        _consumedProtein = (_consumedProtein ?? 0) + (data['proteins'] ?? 0);
+        _consumedCarbs = (_consumedCarbs ?? 0) + (data['carbs'] ?? 0);
+        _consumedFats = (_consumedFats ?? 0) + (data['fats'] ?? 0);
+      }
 
-      print('Loaded nutrients for $dateStr:');
-      print('Calories: $_consumedCalories');
+      print('Updated nutrients for $dateStr:');
+      print('Calories-------------------------------------> $_consumedCalories');
       print('Protein: $_consumedProtein');
       print('Carbs: $_consumedCarbs');
       print('Fats: $_consumedFats');
-
       notifyListeners();
     } catch (e) {
       print('Error loading consumed nutrients: $e');
+      _resetConsumedValues();
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
   }
-
 }
-

@@ -170,175 +170,175 @@ class _DailyTrackingScreenState extends State<DailyTrackingScreen> {
                         ],
                       ),
                       Spacer(),
-                      // Column(
-                      //   children: [
-                      //     // proteins container
-                      //     Container(
-                      //       padding: EdgeInsets.symmetric(
-                      //           vertical: 5.h, horizontal: 15.w),
-                      //       decoration: BoxDecoration(
-                      //           borderRadius: BorderRadius.circular(10.r),
-                      //           color: wColor,
-                      //           boxShadow: [
-                      //             BoxShadow(
-                      //                 offset: Offset(0, 0),
-                      //                 blurRadius: 4,
-                      //                 spreadRadius: 0,
-                      //                 color: bColor.withOpacity(0.30))
-                      //           ]),
-                      //       child: Row(
-                      //         children: [
-                      //           Text(
-                      //             "${authProvider.remainingProtein.toStringAsFixed(2)}",
-                      //             // "177 g",
-                      //             // "3000",
-                      //             style: bodyTextStyle2.copyWith(
-                      //                 color: primaryColor, fontSize: 14.sp),
-                      //           ),
-                      //           SizedBox(
-                      //             width: 10.h,
-                      //           ),
-                      //           Text(
-                      //             "Protein left  ",
-                      //             //text,
-                      //             style: containerTextStyle.copyWith(
-                      //                 color: bColor, fontSize: 10.sp),
-                      //           ),
-                      //           SizedBox(
-                      //             width: 20.h,
-                      //           ),
-                      //           CircularPercentIndicator(
-                      //             percent:
-                      //                 authProvider.calculateProteinPercent(),
-                      //             // 0.3,
-                      //             radius: 20,
-                      //             progressColor: bColor,
-                      //             center: Image.asset(
-                      //                 height: 16.h,
-                      //                 width: 16.w,
-                      //                 fit: BoxFit.contain,
-                      //                 "assets/home_screen/images/chicken_fast_img.png"),
-                      //           ),
-                      //           SizedBox(
-                      //             height: 10.h,
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     ),
-                      //     SizedBox(
-                      //       height: 15.h,
-                      //     ),
+                      Column(
+                        children: [
+                          // proteins container
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 5.h, horizontal: 15.w),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.r),
+                                color: wColor,
+                                boxShadow: [
+                                  BoxShadow(
+                                      offset: Offset(0, 0),
+                                      blurRadius: 4,
+                                      spreadRadius: 0,
+                                      color: bColor.withOpacity(0.30))
+                                ]),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "${authProvider.remainingProtein.toStringAsFixed(2)}",
+                                  // "177 g",
+                                  // "3000",
+                                  style: bodyTextStyle2.copyWith(
+                                      color: primaryColor, fontSize: 14.sp),
+                                ),
+                                SizedBox(
+                                  width: 10.h,
+                                ),
+                                Text(
+                                  "Protein left  ",
+                                  //text,
+                                  style: containerTextStyle.copyWith(
+                                      color: bColor, fontSize: 10.sp),
+                                ),
+                                SizedBox(
+                                  width: 20.h,
+                                ),
+                                CircularPercentIndicator(
+                                  percent:
+                                      authProvider.calculateProteinPercent(),
+                                  // 0.3,
+                                  radius: 20,
+                                  progressColor: bColor,
+                                  center: Image.asset(
+                                      height: 16.h,
+                                      width: 16.w,
+                                      fit: BoxFit.contain,
+                                      "assets/home_screen/images/chicken_fast_img.png"),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15.h,
+                          ),
 
-                      //     //carbs contianer
+                          //carbs contianer
 
-                      //     Container(
-                      //       padding: EdgeInsets.symmetric(
-                      //           vertical: 5.h, horizontal: 15.w),
-                      //       decoration: BoxDecoration(
-                      //           borderRadius: BorderRadius.circular(10.r),
-                      //           color: wColor,
-                      //           boxShadow: [
-                      //             BoxShadow(
-                      //                 offset: Offset(0, 0),
-                      //                 blurRadius: 4,
-                      //                 spreadRadius: 0,
-                      //                 color: bColor.withOpacity(0.30))
-                      //           ]),
-                      //       child: Row(
-                      //         children: [
-                      //           Text(
-                      //             "${authProvider.remainingCarbs.toStringAsFixed(2)}",
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 5.h, horizontal: 15.w),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.r),
+                                color: wColor,
+                                boxShadow: [
+                                  BoxShadow(
+                                      offset: Offset(0, 0),
+                                      blurRadius: 4,
+                                      spreadRadius: 0,
+                                      color: bColor.withOpacity(0.30))
+                                ]),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "${authProvider.remainingCarbs.toStringAsFixed(2)}",
 
-                      //             // "180 g",
-                      //             // "3000",
-                      //             style: bodyTextStyle2.copyWith(
-                      //                 color: primaryColor, fontSize: 14.sp),
-                      //           ),
-                      //           SizedBox(
-                      //             width: 10.h,
-                      //           ),
-                      //           Text(
-                      //             "Carbs left    ",
-                      //             //text,
-                      //             style: containerTextStyle.copyWith(
-                      //                 color: bColor, fontSize: 10.sp),
-                      //           ),
-                      //           SizedBox(
-                      //             width: 20.h,
-                      //           ),
-                      //           CircularPercentIndicator(
-                      //             percent: authProvider.calculateCarbsPercent(),
-                      //             //0.7,
-                      //             radius: 20,
-                      //             progressColor: Colors.red,
-                      //             center: Image.asset(
-                      //                 height: 16.h,
-                      //                 width: 16.w,
-                      //                 fit: BoxFit.contain,
-                      //                 "assets/home_screen/images/sprout_growing_img.png"),
-                      //           ),
-                      //           SizedBox(
-                      //             height: 10.h,
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     ),
-                      //     SizedBox(
-                      //       height: 15.h,
-                      //     ),
-                      //     //fats container
-                      //     Container(
-                      //       padding: EdgeInsets.symmetric(
-                      //            vertical: 5.h, horizontal: 20.w),
-                      //       decoration: BoxDecoration(
-                      //           borderRadius: BorderRadius.circular(10.r),
-                      //           color: wColor,
-                      //           boxShadow: [
-                      //             BoxShadow(
-                      //                 offset: Offset(0, 0),
-                      //                 blurRadius: 4,
-                      //                 spreadRadius: 0,
-                      //                 color: bColor.withOpacity(0.30))
-                      //           ]),
-                      //       child: Row(
-                      //         children: [
-                      //           Text(
-                      //             "${authProvider.remainingFats.toStringAsFixed(2)}",
-                      //             //"85 g",
-                      //             // "3000",
-                      //             style: bodyTextStyle2.copyWith(
-                      //                 color: primaryColor, fontSize: 14.sp),
-                      //           ),
-                      //           SizedBox(
-                      //             width: 10.h,
-                      //           ),
-                      //           Text(
-                      //             "Fat left      ",
-                      //             //text,
-                      //             style: containerTextStyle.copyWith(
-                      //                 color: bColor, fontSize: 10.sp),
-                      //           ),
-                      //           SizedBox(
-                      //             width: 20.h,
-                      //           ),
-                      //           CircularPercentIndicator(
-                      //             percent: authProvider.calculateFatsPercent(),
-                      //             radius: 20,
-                      //             progressColor: Colors.amber,
-                      //             center: Image.asset(
-                      //                 height: 16.h,
-                      //                 width: 16.w,
-                      //                 fit: BoxFit.contain,
-                      //                 "assets/home_screen/images/layer_img.png"),
-                      //           ),
-                      //           SizedBox(
-                      //             height: 10.h,
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     ),
-                      //   ],
-                      // )
+                                  // "180 g",
+                                  // "3000",
+                                  style: bodyTextStyle2.copyWith(
+                                      color: primaryColor, fontSize: 14.sp),
+                                ),
+                                SizedBox(
+                                  width: 10.h,
+                                ),
+                                Text(
+                                  "Carbs left    ",
+                                  //text,
+                                  style: containerTextStyle.copyWith(
+                                      color: bColor, fontSize: 10.sp),
+                                ),
+                                SizedBox(
+                                  width: 20.h,
+                                ),
+                                CircularPercentIndicator(
+                                  percent: authProvider.calculateCarbsPercent(),
+                                  //0.7,
+                                  radius: 20,
+                                  progressColor: Colors.red,
+                                  center: Image.asset(
+                                      height: 16.h,
+                                      width: 16.w,
+                                      fit: BoxFit.contain,
+                                      "assets/home_screen/images/sprout_growing_img.png"),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15.h,
+                          ),
+                          //fats container
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                 vertical: 5.h, horizontal: 20.w),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.r),
+                                color: wColor,
+                                boxShadow: [
+                                  BoxShadow(
+                                      offset: Offset(0, 0),
+                                      blurRadius: 4,
+                                      spreadRadius: 0,
+                                      color: bColor.withOpacity(0.30))
+                                ]),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "${authProvider.remainingFats.toStringAsFixed(2)}",
+                                  //"85 g",
+                                  // "3000",
+                                  style: bodyTextStyle2.copyWith(
+                                      color: primaryColor, fontSize: 14.sp),
+                                ),
+                                SizedBox(
+                                  width: 10.h,
+                                ),
+                                Text(
+                                  "Fat left      ",
+                                  //text,
+                                  style: containerTextStyle.copyWith(
+                                      color: bColor, fontSize: 10.sp),
+                                ),
+                                SizedBox(
+                                  width: 20.h,
+                                ),
+                                CircularPercentIndicator(
+                                  percent: authProvider.calculateFatsPercent(),
+                                  radius: 20,
+                                  progressColor: Colors.amber,
+                                  center: Image.asset(
+                                      height: 16.h,
+                                      width: 16.w,
+                                      fit: BoxFit.contain,
+                                      "assets/home_screen/images/layer_img.png"),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
                    
                    
                     ],

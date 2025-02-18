@@ -18,33 +18,33 @@ class FoodDetectionScreen extends StatelessWidget {
     print("food detection screen");
     return Scaffold(
       backgroundColor: bgColor,
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0,
-      //   leading: Container(
-      //     margin: EdgeInsets.only(left: 20.w, top: 15.h),
-      //     // height: 35.h,
-      //     // width: 35.w,
-      //     decoration: BoxDecoration(shape: BoxShape.circle, color: btnColor),
-      //     child: IconButton(
-      //       icon: Icon(Icons.close, color: Colors.black),
-      //       onPressed: () {
-      //         Navigator.pop(context);
-      //       },
-      //     ),
-      //   ),
-      //   actions: [
-      //     Container(
-      //       alignment: Alignment.center,
-      //       margin: EdgeInsets.only(right: 20.w, top: 15.h),
-      //       decoration: BoxDecoration(shape: BoxShape.circle, color: btnColor),
-      //       child: IconButton(
-      //         icon: Icon(Icons.question_mark_outlined, color: Colors.black),
-      //         onPressed: () {},
-      //       ),
-      //     ),
-      //   ],
-      // ),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: Container(
+          margin: EdgeInsets.only(left: 20.w, top: 15.h),
+          // height: 35.h,
+          // width: 35.w,
+          decoration: BoxDecoration(shape: BoxShape.circle, color: btnColor),
+          child: IconButton(
+            icon: Icon(Icons.close, color: Colors.black),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+        actions: [
+          Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.only(right: 20.w, top: 15.h),
+            decoration: BoxDecoration(shape: BoxShape.circle, color: btnColor),
+            child: IconButton(
+              icon: Icon(Icons.question_mark_outlined, color: Colors.black),
+              onPressed: () {},
+            ),
+          ),
+        ],
+      ),
 
       body: SafeArea(
         child: Stack(
@@ -86,10 +86,10 @@ class FoodDetectionScreen extends StatelessWidget {
                               FloatingActionButton(
                             shape: CircleBorder(),
                             onPressed: () async {
-                              final dummyCalories = 700.0;
-                              final dummyProteins = 90.0;
-                              final dummyFats = 40.0;
-                              final dummycarbs = 100.0;
+                              final dummyCalories = 300.0;
+                              final dummyProteins = 20.0;
+                              final dummyFats = 30.0;
+                              final dummycarbs = 60.0;
 
                               final Map<String, dynamic> foodDetectionsData = {
                                 'calories': dummyCalories,
@@ -114,7 +114,7 @@ class FoodDetectionScreen extends StatelessWidget {
                               // Navigate back to the DailyTrackingScreen
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => DailyTrackingScreen()),
+                                MaterialPageRoute(builder: (context) => HomeScreen()),
                               );
                             },
                             backgroundColor: wColor,

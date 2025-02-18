@@ -4,6 +4,8 @@ import 'package:cal_ai/controllers/providers/general_provider.dart';
 import 'package:cal_ai/controllers/providers/home_page_provider.dart';
 import 'package:cal_ai/firebase_options.dart';
 import 'package:cal_ai/utils/shared_preferences.dart';
+import 'package:cal_ai/view/screens/homescreen/daily_tracking_screen.dart';
+import 'package:cal_ai/view/screens/homescreens/homescreen.dart';
 import 'package:cal_ai/view/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -47,10 +49,11 @@ class MyApp extends StatelessWidget {
               useMaterial3: true,
             ),
             home: 
-      //  CircularProgressIndicators()
+    // DailyTrackingScreen()
            
-            SplashScreen()
-        // HomeScreen()
+          SplashScreen()
+          // DailyTrackingScreen()
+      //   HomeScreen()
 
           // DailyTrackingScreen()
            

@@ -25,63 +25,62 @@ class FoodInfoProvider extends ChangeNotifier {
   DateTime? get selectedDate => _selected;
 
   //post the data of detec food data
+Future<void> postDetectFoodData(
+    Map<String, dynamic> data, BuildContext context, DateTime selectedDate) async {
+  try {
+    String uid = await CalSharedPreferences.getString('uid');
+    if (uid.isEmpty) return;
 
-  Future<void> postDetectFoodData(
-      Map<String, dynamic> data, BuildContext context, DateTime selectedDate) async {
-    try {
-      String uid = await CalSharedPreferences.getString('uid');
-      if (uid.isEmpty) {
-        throw Exception('No user logged in');
-      }
+    // 1. Format selected date for Firestore
+    final normalizedDate = DateTime(selectedDate.year, selectedDate.month, selectedDate.day);
+    String dateStr = DateFormat('yyyy-MM-dd').format(normalizedDate);
+    
+    print('Saving food data for date: $dateStr');
 
-      DateTime normalizedDate = DateTime(selectedDate.year, selectedDate.month, selectedDate.day);
-      String dateStr = DateFormat('yyyy-MM-dd').format(normalizedDate);
-      
-      print('Saving food data for date: $dateStr');
+    // 2. Process the data to ensure proper number formats
+    Map<String, dynamic> processedData = {
+      'calories': data['calories'] is String 
+          ? double.parse(data['calories']) 
+          : (data['calories'] as num).toDouble(),
+      'proteins': data['proteins'] is String 
+          ? double.parse(data['proteins']) 
+          : (data['proteins'] as num).toDouble(),
+      'carbs': data['carbs'] is String 
+          ? double.parse(data['carbs']) 
+          : (data['carbs'] as num).toDouble(),
+      'fats': data['fats'] is String 
+          ? double.parse(data['fats']) 
+          : (data['fats'] as num).toDouble(),
+      'title': data['title'] ?? 'Untitled',
+      'time': DateFormat('HH:mm:ss').format(DateTime.now()),
+      'dateLogged': normalizedDate.toIso8601String(),
+    };
 
-      Map<String, dynamic> processedData = {
-        'calories': data['calories'] is String 
-            ? double.parse(data['calories']) 
-            : (data['calories'] as num).toDouble(),
-        'proteins': data['proteins'] is String 
-            ? double.parse(data['proteins']) 
-            : (data['proteins'] as num).toDouble(),
-        'carbs': data['carbs'] is String 
-            ? double.parse(data['carbs']) 
-            : (data['carbs'] as num).toDouble(),
-        'fats': data['fats'] is String 
-            ? double.parse(data['fats']) 
-            : (data['fats'] as num).toDouble(),
-        'description': data['description'] ?? '',
-        'imagePath': data['imagePath'] ?? '',
-        'title': data['title'] ?? 'Untitled',
-        'time': data['time'] ?? DateFormat('HH:mm:ss').format(DateTime.now()),
-        'dateLogged': normalizedDate.toIso8601String(),
-      };
+    // 3. Create unique ID for this food entry
+    String uniqueId = DateTime.now().millisecondsSinceEpoch.toString();
+    
+    // 4. Save to Firebase
+    await _firestore
+        .collection('userdata')
+        .doc(uid)
+        .collection("userlogs")
+        .doc(dateStr)
+        .collection("history")
+        .doc(uniqueId)
+        .set(processedData);
 
-      print("processed data-------$processedData");
+    print("Food data saved successfully");
 
-      // Save to the specific date's document
-      String uniqueId = DateTime.now().millisecondsSinceEpoch.toString();
-      await _firestore
-          .collection('userdata')
-          .doc(uid)
-          .collection("userlogs")
-          .doc(dateStr)
-          .collection("history")
-          .doc(uniqueId)
-          .set(processedData);
+    // 5. Reload the data for current date
+    final authProvider = Provider.of<AuthenticationProvider>(context, listen: false);
+    print("normalizedDate----------${normalizedDate}");
+    await authProvider.loadConsumedNutrientsForDate(normalizedDate);
 
-      // Load the updated nutrients for this specific date
-      final authProvider = Provider.of<AuthenticationProvider>(context, listen: false);
-      await authProvider.loadConsumedNutrientsForDate(normalizedDate);
-
-      notifyListeners();
-    } catch (e) {
-      print("Error saving food data: $e");
-      rethrow;
-    }
+  } catch (e) {
+    print("Error saving food data: $e");
+    rethrow;
   }
+}
 
 // Fetch recently logged food data
   Stream<List<Map<String, dynamic>>> getRecentlyLoggedFoodData(DateTime date) {
@@ -104,6 +103,7 @@ class FoodInfoProvider extends ChangeNotifier {
           .map((snapshot) {
         return snapshot.docs.map((doc) {
           Map<String, dynamic> data = doc.data();
+          // print("date is ------------->${data}");
           // Ensure numeric values are properly converted
           return {
             'calories': (data['calories'] as num).toDouble(),

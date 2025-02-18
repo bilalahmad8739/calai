@@ -117,8 +117,14 @@ class _DailyTrackingScreenState extends State<DailyTrackingScreen> {
                   //calender
                   WeeklyDatePicker(
                     selectedDay: selectedDate,
-                    changeDay: (value) async {
-                      print('Date changed to: ${value.toString()}');
+                    changeDay: (value)  {
+                      print("onchange work");
+                      // print('Date changed to ----------: ${value.toString()}');
+                      final authProvider =
+                          Provider.of<AuthenticationProvider>(context, listen: false);
+                      print("first ---->${authProvider.calorieGoal.toString()}");
+                      // print("first ---->0000000");
+
                       
                       setState(() {
                         _selectDay = value;
@@ -126,15 +132,16 @@ class _DailyTrackingScreenState extends State<DailyTrackingScreen> {
 
                       final foodInfoProvider =
                           Provider.of<FoodInfoProvider>(context, listen: false);
-                      final authProvider =
-                          Provider.of<AuthenticationProvider>(context, listen: false);
+                      
 
                       foodInfoProvider.selectedDate = value;
-                      await authProvider.loadConsumedNutrientsForDate(value);
+                   //   await authProvider.loadConsumedNutrientsForDate(value);
+                        print("Date changed to: ${value.toString()}");
                       
                       if (mounted) {
                         setState(() {});
                       }
+                      print("last ---->${authProvider.calorieGoal.toString()}");
                     },
                     enableWeeknumberText: false,
                     weeknumberColor: Colors.blue,
@@ -145,6 +152,11 @@ class _DailyTrackingScreenState extends State<DailyTrackingScreen> {
                     selectedDigitColor: Colors.white,
                     digitsColor: Colors.black,
                   ),
+                 
+                //  WeeklyDatePicker(selectedDay: _selectDay!, changeDay: (value){
+
+                //   print("change-------------->");
+                //  }),
                   SizedBox(height: 50.h),
 
                   Row(
